@@ -137,7 +137,6 @@ public class TileTest {
 
         assertEquals(-2.0014877697641738E7, tile.getUl_x(), 1e-8);
         assertEquals(1.0007323020641737E7, tile.getUl_y(), 1e-8);
-        // @todo 1 tb/tb continue here 2018-03-22
     }
 
     @Test
@@ -163,7 +162,6 @@ public class TileTest {
 
         assertEquals(-2.0014993525820866E7, tile.getUl_x(), 1e-8);
         assertEquals(1.0007438848820869E7, tile.getUl_y(), 1e-8);
-        // @todo 1 tb/tb continue here 2018-03-22
     }
 
     @Test
@@ -195,5 +193,29 @@ public class TileTest {
         assertEquals(0.0, isinDef.ncol_inv[9234], 1e-8);    // @todo 2 tb/tb why the hell do they allocate double the values when they're not filled with data 2018-03-21
 
         assertEquals(5.635742378161289E-4, isinDef.col_dist_inv, 1e-8);
+    }
+
+    @Test
+    public void testInvMap_ISIN_K() {
+        final ProjectionParam params = ProjectionParamFactory.get(ProjectionType.ISIN_K);
+        tile.init(params);
+
+        tile.invMap(9.993682, 53.551086);
+
+    }
+
+    @Test
+    public void testInvPix_ISIN_K() {
+        final ProjectionParam params = ProjectionParamFactory.get(ProjectionType.ISIN_K);
+        tile.init(params);
+
+        final IsinPoint isinPoint = tile.invPix(10799.442208551493, 21599.51078515832);
+
+        // @todo 1 tb/tb continue here 2018-05-25
+//        assertEquals(3, isinPoint.getTile_line());
+//        assertEquals(18, isinPoint.getTile_col());
+//        assertEquals(773.37, isinPoint.getY(), 1e-8);
+//        assertEquals(711.94, isinPoint.getX(), 1e-8);
+
     }
 }

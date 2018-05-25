@@ -1,5 +1,14 @@
 package com.bc.s3mpc.isin;
 
+
+/*
+ Things we need from this package:
+
+ - convert lon/lat into tile_x, tile_y, x, y
+ - return dimension of specific tile
+ - return projection params for each tile
+
+ */
 class IsinForward {
 
     private static final double EPS_CNVT = 0.01;    // Doubles must be within this of an integer to be valid
@@ -120,7 +129,7 @@ class IsinForward {
 
     }
 
-    public Point transform(Point point) {
+    public IsinPoint transform(IsinPoint point) {
         final double lon = point.getX();
         final double lat = point.getY();
         double x = 0.0;
@@ -151,6 +160,6 @@ class IsinForward {
         final double col = (this.row[(int) irow].ncol * flon) - this.row[(int) irow].icol_cen;
         x = false_east + (col_dist * col);
 
-        return new Point(x, y);
+        return new IsinPoint(x, y);
     }
 }

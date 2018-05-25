@@ -148,28 +148,28 @@ public class IsinForwardTest {
         forward.init(6371007.181, 0.0, 0.0, 0.0, 21600.0, 1.0);
 
         // front pole
-        Point point = new Point(0.0, 0.0);
+        IsinPoint point = new IsinPoint(0.0, 0.0);
 
-        Point result = forward.transform(point);
+        IsinPoint result = forward.transform(point);
         assertEquals(0.0, result.getX(), 1e-8);
         assertEquals(0.0, result.getY(), 1e-8);
 
         // Hamburg
-        point = new Point(9.993682 * Math.PI / 180.0, 53.551086 * Math.PI / 180.0);
+        point = new IsinPoint(9.993682 * Math.PI / 180.0, 53.551086 * Math.PI / 180.0);
 
         result = forward.transform(point);
         assertEquals(660163.620386195, result.getX(), 1e-8);
         assertEquals(5954615.7911761785, result.getY(), 1e-8);
 
         // GITZ
-        point = new Point(10.423067 * Math.PI / 180.0, 53.408436 * Math.PI / 180.0);
+        point = new IsinPoint(10.423067 * Math.PI / 180.0, 53.408436 * Math.PI / 180.0);
 
         result = forward.transform(point);
         assertEquals(690345.0908636916, result.getX(), 1e-8);
         assertEquals(5938753.817011709, result.getY(), 1e-8);
 
         // Canteen
-        point = new Point(10.428581 * Math.PI / 180.0, 53.405065 * Math.PI / 180.0);
+        point = new IsinPoint(10.428581 * Math.PI / 180.0, 53.405065 * Math.PI / 180.0);
 
         result = forward.transform(point);
         assertEquals(691308.0680468029, result.getX(), 1e-8);

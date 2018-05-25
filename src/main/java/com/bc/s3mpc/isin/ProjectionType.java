@@ -5,5 +5,4 @@ public enum ProjectionType {
     ISIN_K,
     ISIN_H,
     ISIN_Q
-
 }

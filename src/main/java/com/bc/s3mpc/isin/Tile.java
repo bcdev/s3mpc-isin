@@ -1,6 +1,9 @@
 package com.bc.s3mpc.isin;
 
 public class Tile {
+
+    private static final double MAP_EPS2 = 0.5e-3 * 55.0;
+
     private long nl;
     private long ns;
     private long nl_tile;
@@ -119,7 +122,7 @@ public class Tile {
         long nrow_half;
         int pixel_size_ratio = 0;
         switch (params.projection) {
-            case ISIN_K:
+            case ISIN_K:    // 1km
                 nrow_half = 180 * 60;
                 isinu = getIsinDef(nrow_half, params.sphere);
                 projParam[8] = nrow_half * 2.0;
@@ -127,7 +130,7 @@ public class Tile {
                 pixel_size_ratio = 1;
                 break;
 
-            case ISIN_H:
+            case ISIN_H:    // 500m
                 nrow_half = 180 * 60 * 2;
                 isinu = getIsinDef(nrow_half, params.sphere);
                 projParam[8] = nrow_half * 2.0;
@@ -135,7 +138,7 @@ public class Tile {
                 pixel_size_ratio = 2;
                 break;
 
-            case ISIN_Q:
+            case ISIN_Q:    // 250m
                 nrow_half = 180 * 60 * 4;
                 isinu = getIsinDef(nrow_half, params.sphere);
                 projParam[8] = nrow_half * 2.0;
@@ -166,7 +169,7 @@ public class Tile {
         ul_y = params.ul_yul - (0.5 * siz_y);
 
         PGS_GCT_Init.forward(projParam);
-        PGS_GCT_Init.reverse(projParam);
+        //PGS_GCT_Init.reverse(projParam);
     }
 
     static IsinDef getIsinDef(long nrow_half, double sphere) {
@@ -195,5 +198,47 @@ public class Tile {
         isinDef.col_dist_inv = ncol_cen / (2.0 * Math.PI * sphere);
 
         return isinDef;
+    }
+
+    public void invMap(double x, double y) {
+        final double line_global = ((ul_y - y) / siz_y) - nl_offset;
+        final double samp_global = ((x - ul_x) / siz_x) - ns_offset;
+
+        System.out.println("samp_global = " + samp_global);
+        System.out.println("line_global = " + line_global);
+    }
+
+    public IsinPoint invPix(double line_global, double samp_global) {
+        if (line_global < (-0.5 - MAP_EPS2)  || line_global > (nl - 0.5 + MAP_EPS2)) {
+            throw new RuntimeException("Map line out of range: " + line_global);
+        }
+
+        if (samp_global < (-0.5 - MAP_EPS2)  || samp_global > (ns - 0.5 + MAP_EPS2)) {
+            throw new RuntimeException("Map row out of range: " + samp_global);
+        }
+
+        long iline_global = (long)(line_global + 0.5);
+        if (iline_global >= nl_p) {
+            iline_global = nl - 1;
+        }
+        if (iline_global < 0) {
+            iline_global = 0;
+        }
+
+        long isamp_global = (long)(samp_global + 0.5);
+        if (isamp_global >= ns_p) {
+            isamp_global = ns - 1;
+        }
+        if (isamp_global < 0) {
+            isamp_global = 0;
+        }
+
+        final int itile_line = (int) (iline_global / nl_tile);
+        final int itile_samp = (int)(isamp_global / ns_tile);
+
+        final double line = line_global - (itile_line * nl_tile);
+        final double samp = samp_global - (itile_samp * ns_tile);
+
+        return new IsinPoint(samp, line, itile_line, itile_samp);
     }
 }
