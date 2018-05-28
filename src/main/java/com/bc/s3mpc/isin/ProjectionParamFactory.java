@@ -7,24 +7,24 @@ public class ProjectionParamFactory {
         switch (projectionType) {
             case ISIN_K:
                 projectionParam.projection = ProjectionType.ISIN_K;
-                setIsinValues(projectionParam);
                 break;
 
             case ISIN_H:
                 projectionParam.projection = ProjectionType.ISIN_H;
-                setIsinValues(projectionParam);
                 break;
 
             case ISIN_Q:
                 projectionParam.projection = ProjectionType.ISIN_Q;
-                setIsinValues(projectionParam);
                 break;
         }
+
+        setIsinValues(projectionParam);
 
         return projectionParam;
     }
 
     private static void setIsinValues(ProjectionParam projectionParam) {
+        projectionParam.iproj_tile = 1;
         projectionParam.ul_xul = -20015109.354;
         projectionParam.ul_yul = 10007554.677;
         projectionParam.pixel_size = 926.62543305;

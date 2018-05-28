@@ -3,6 +3,7 @@ package com.bc.s3mpc.isin;
 public class ProjectionParam {
 
     ProjectionType projection;
+    int iproj_tile;
     double ul_xul;
     double ul_yul;
     double pixel_size;

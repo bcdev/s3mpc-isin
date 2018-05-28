@@ -200,8 +200,11 @@ public class TileTest {
         final ProjectionParam params = ProjectionParamFactory.get(ProjectionType.ISIN_K);
         tile.init(params);
 
-        tile.invMap(9.993682, 53.551086);
+        // @todo 1 tb/tb writze this test correctly 2018-05-28
 
+//        tile.invMap(9.993682 * Math.PI / 180.0, 53.551086 * Math.PI / 180.0);
+//
+//        tile.invMap(0.0, 0.0);
     }
 
     @Test
@@ -209,13 +212,21 @@ public class TileTest {
         final ProjectionParam params = ProjectionParamFactory.get(ProjectionType.ISIN_K);
         tile.init(params);
 
-        final IsinPoint isinPoint = tile.invPix(10799.442208551493, 21599.51078515832);
-
-        // @todo 1 tb/tb continue here 2018-05-25
+//        IsinPoint isinPoint = tile.invPix(660163.620386195, 5954615.7911761785);
+//
+//        // @todo 1 tb/tb continue here 2018-05-25
 //        assertEquals(3, isinPoint.getTile_line());
 //        assertEquals(18, isinPoint.getTile_col());
 //        assertEquals(773.37, isinPoint.getY(), 1e-8);
 //        assertEquals(711.94, isinPoint.getX(), 1e-8);
+
+//        IsinPoint isinPoint = tile.invPix(10799.50000006475, 21599.5000001295);
+//
+//        // @todo 1 tb/tb continue here 2018-05-25
+//        //assertEquals(9, isinPoint.getTile_line());
+//        assertEquals(18, isinPoint.getTile_col());
+//        // assertEquals(773.37, isinPoint.getY(), 1e-8);
+//        assertEquals(-0.4999998704988684, isinPoint.getX(), 1e-8);
 
     }
 }

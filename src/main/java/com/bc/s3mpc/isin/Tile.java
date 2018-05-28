@@ -17,6 +17,7 @@ public class Tile {
     private double ul_x;
     private double ul_y;
     private IsinDef isinu;
+    private IsinForward forward;
 
     public void setNl(long nl) {
         this.nl = nl;
@@ -163,13 +164,22 @@ public class Tile {
         siz_x = params.pixel_size / pixel_size_ratio;
         //noinspection SuspiciousNameCombination - we have equal area pixel
         siz_y = siz_x;
-        ;
 
         ul_x = params.ul_xul + (0.5 * siz_x);
         ul_y = params.ul_yul - (0.5 * siz_y);
 
-        PGS_GCT_Init.forward(projParam);
+        forward = PGS_GCT_Init.forward(projParam);
         //PGS_GCT_Init.reverse(projParam);
+    }
+
+    public IsinPoint forwardTileImage(double lon, double lat) {
+        final IsinPoint transformed = forward.transform(new IsinPoint(lon, lat));
+        final IsinPoint invMapped = invMap(transformed);
+        return invPix(invMapped);
+    }
+
+    public IsinPoint forwardGlobalMap(double lon, double lat) {
+        return forward.transform(new IsinPoint(lon, lat));
     }
 
     static IsinDef getIsinDef(long nrow_half, double sphere) {
@@ -185,7 +195,7 @@ public class Tile {
 
         long ncol_cen = 0;
         for (int irow = 0; irow < nrow_half; irow++) {
-            final double clat = half_pi * (1.0 - ((double) irow + 0.5) / nrow_half);
+            final double clat = half_pi * (1.0 - ((double) (irow) + 0.5) / nrow_half);
             long ncol = (long) ((2.0 * Math.cos(clat) * isinDef.nrow) + 0.5);
             if (ncol < 1) {
                 ncol = 1;
@@ -200,15 +210,16 @@ public class Tile {
         return isinDef;
     }
 
-    public void invMap(double x, double y) {
-        final double line_global = ((ul_y - y) / siz_y) - nl_offset;
-        final double samp_global = ((x - ul_x) / siz_x) - ns_offset;
+    public IsinPoint invMap(IsinPoint isinPoint) {
+        final double line_global = ((ul_y - isinPoint.getY()) / siz_y) - nl_offset;
+        final double samp_global = ((isinPoint.getX() - ul_x) / siz_x) - ns_offset;
 
-        System.out.println("samp_global = " + samp_global);
-        System.out.println("line_global = " + line_global);
+        return new IsinPoint(samp_global, line_global);
     }
 
-    public IsinPoint invPix(double line_global, double samp_global) {
+    public IsinPoint invPix(IsinPoint isinPoint) {
+        final double samp_global = isinPoint.getX();
+        final double line_global = isinPoint.getY();
         if (line_global < (-0.5 - MAP_EPS2)  || line_global > (nl - 0.5 + MAP_EPS2)) {
             throw new RuntimeException("Map line out of range: " + line_global);
         }

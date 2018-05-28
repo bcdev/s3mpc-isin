@@ -88,7 +88,7 @@ class IsinForward {
             final Isin_row currentRow = new Isin_row();
 
             // Calculate latitude at center of row
-            final double clat = HALFPI * (1.0 - ((double) irow + 0.5) / nrow_half);
+            final double clat = HALFPI * (1.0 - ((double) (irow + 0.5)) / nrow_half);
 
             // Calculate number of columns per row
             if (ijustify < 2)
