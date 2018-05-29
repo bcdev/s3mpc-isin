@@ -1,6 +1,6 @@
 package com.bc.s3mpc.isin;
 
-public class ProjectionParam {
+class ProjectionParam {
 
     ProjectionType projection;
     int iproj_tile;

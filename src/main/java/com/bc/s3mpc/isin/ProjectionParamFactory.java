@@ -1,8 +1,8 @@
 package com.bc.s3mpc.isin;
 
-public class ProjectionParamFactory {
+class ProjectionParamFactory {
 
-    public static ProjectionParam get(ProjectionType projectionType) {
+    static ProjectionParam get(ProjectionType projectionType) {
         final ProjectionParam projectionParam = new ProjectionParam();
         switch (projectionType) {
             case ISIN_K:

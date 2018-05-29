@@ -1,14 +1,7 @@
 package com.bc.s3mpc.isin;
 
 
-/*
- Things we need from this package:
 
- - convert lon/lat into tile_x, tile_y, x, y
- - return dimension of specific tile
- - return projection params for each tile
-
- */
 class IsinForward {
 
     private static final double EPS_CNVT = 0.01;    // Doubles must be within this of an integer to be valid
@@ -88,7 +81,7 @@ class IsinForward {
             final Isin_row currentRow = new Isin_row();
 
             // Calculate latitude at center of row
-            final double clat = HALFPI * (1.0 - ((double) (irow + 0.5)) / nrow_half);
+            final double clat = HALFPI * (1.0 - (irow + 0.5) / nrow_half);
 
             // Calculate number of columns per row
             if (ijustify < 2)
@@ -129,13 +122,11 @@ class IsinForward {
 
     }
 
-    public IsinPoint transform(IsinPoint point) {
+    IsinPoint transform(IsinPoint point) {
         final double lon = point.getX();
         final double lat = point.getY();
-        double x = 0.0;
-        double y = 0.0;
 
-        y = false_north + (lat * sphere);
+        final double y = false_north + (lat * sphere);
 
         // integer row number
         final double row = (HALFPI - lat) * ang_size_inv;
@@ -158,7 +149,7 @@ class IsinForward {
 
         // Column number (relative to center)
         final double col = (this.row[(int) irow].ncol * flon) - this.row[(int) irow].icol_cen;
-        x = false_east + (col_dist * col);
+        final double x = false_east + (col_dist * col);
 
         return new IsinPoint(x, y);
     }
